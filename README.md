@@ -10,5 +10,5 @@ An Android app that supports audio recording with bookmarks.
 
 # Differentiators
 
-* Bookmark without notes. Be in the moment without with less distractions.
+* Bookmark without notes. Be in the moment with less distractions.
 * Large bookmark button while recording. Avoid misses and accidental actions.
