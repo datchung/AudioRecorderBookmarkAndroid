@@ -46,7 +46,7 @@ public class PlayActivity extends AppCompatActivity {
     }
 
     private void loadBookmarks() {
-        String bookmarksFilePath = mFilePath.replace(".3gp", ".txt");
+        String bookmarksFilePath = mFilePath.replace(AppStorage.AUDIO_FILE_EXTENSION, AppStorage.BOOKMARK_FILE_EXTENSION);
         mBookmarks = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(bookmarksFilePath))) {

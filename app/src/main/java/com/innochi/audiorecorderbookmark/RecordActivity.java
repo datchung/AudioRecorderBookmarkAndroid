@@ -66,8 +66,8 @@ public class RecordActivity extends AppCompatActivity {
     private void startRecording() {
         recordStartDate = new Date();
         String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(recordStartDate);
-        fileName += timeStamp + ".3gp";
-        bookmarkFileName += timeStamp + ".txt";
+        fileName += timeStamp + AppStorage.AUDIO_FILE_EXTENSION;
+        bookmarkFileName += timeStamp + AppStorage.BOOKMARK_FILE_EXTENSION;
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -151,7 +151,7 @@ public class RecordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_record);
 
         // Record to the external cache directory for visibility
-        fileName = getExternalCacheDir().getAbsolutePath() + "/";
+        fileName = AppStorage.getAppRootDirectoryPath(this);
         bookmarkFileName = fileName;
 
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
