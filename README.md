@@ -4,7 +4,7 @@ An Android app that supports audio recording with bookmarks.
 
 # Use Cases
 
-* Recording a lecture or speech and bookmarking parts of interest for later review or note taking
+* Recording a lecture/speech/presentation and bookmarking parts of interest for later review or note taking
 * Recording an audio book and bokmarking parts of interest for later review or note taking
 * ?
 
