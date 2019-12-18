@@ -12,8 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".RecordingsActivity"></activity>
-        <activity android:name=".RecordActivity" />
-        <activity android:name=".PlayActivity" />
+        <activity android:name=".RecordActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"/>
+        <activity android:name=".PlayActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
