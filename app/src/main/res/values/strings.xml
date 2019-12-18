@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">Audio Recorder Bookmark</string>
+    <string name="app_name">AudioRecordingBookmark</string>
+    <string name="record">Record</string>
+    <string name="play">Play</string>
+    <string name="nextBookmark">Next Bookmark</string>
+    <string name="pause">Pause</string>
+    <string name="stop">Stop</string>
+    <string name="previousBookmark">Previous Bookmark</string>
 </resources>
