@@ -36,9 +36,6 @@ public class RecordActivity extends AppCompatActivity {
     private RecordButton recordButton = null;
     private MediaRecorder recorder = null;
 
-    private PlayButton playButton = null;
-    private MediaPlayer player = null;
-
     private BookmarkButton bookmarkButton = null;
 
     private Date recordStartDate = null;
@@ -64,30 +61,6 @@ public class RecordActivity extends AppCompatActivity {
         } else {
             stopRecording();
         }
-    }
-
-    private void onPlay(boolean start) {
-        if (start) {
-            startPlaying();
-        } else {
-            stopPlaying();
-        }
-    }
-
-    private void startPlaying() {
-        player = new MediaPlayer();
-        try {
-            player.setDataSource(fileName);
-            player.prepare();
-            player.start();
-        } catch (IOException e) {
-            Log.e(LOG_TAG, "prepare() failed");
-        }
-    }
-
-    private void stopPlaying() {
-        player.release();
-        player = null;
     }
 
     private void startRecording() {
@@ -139,28 +112,6 @@ public class RecordActivity extends AppCompatActivity {
         public RecordButton(Context ctx) {
             super(ctx);
             setText("Start recording");
-            setOnClickListener(clicker);
-        }
-    }
-
-    class PlayButton extends Button {
-        boolean mStartPlaying = true;
-
-        OnClickListener clicker = new OnClickListener() {
-            public void onClick(View v) {
-                onPlay(mStartPlaying);
-                if (mStartPlaying) {
-                    setText("Stop playing");
-                } else {
-                    setText("Start playing");
-                }
-                mStartPlaying = !mStartPlaying;
-            }
-        };
-
-        public PlayButton(Context ctx) {
-            super(ctx);
-            setText("Start playing");
             setOnClickListener(clicker);
         }
     }
@@ -219,12 +170,6 @@ public class RecordActivity extends AppCompatActivity {
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT,
                         1));
-        playButton = new PlayButton(this);
-        ll.addView(playButton,
-                new LinearLayout.LayoutParams(
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        0));
         setContentView(ll);
     }
 
@@ -234,11 +179,6 @@ public class RecordActivity extends AppCompatActivity {
         if (recorder != null) {
             recorder.release();
             recorder = null;
-        }
-
-        if (player != null) {
-            player.release();
-            player = null;
         }
     }
 }
