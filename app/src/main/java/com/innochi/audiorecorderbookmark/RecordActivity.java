@@ -25,7 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-// https://developer.android.com/guide/topics/media/mediarecorder#java
+// Inspired by https://developer.android.com/guide/topics/media/mediarecorder#java
 public class RecordActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "AudioRecordTest";
@@ -126,11 +126,11 @@ public class RecordActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Date bookmarkDate = new Date();
 
-                long dateDiff = getDateDiff(recordStartDate, bookmarkDate, TimeUnit.SECONDS);
+                long dateDiff = getDateDiff(recordStartDate, bookmarkDate, TimeUnit.MILLISECONDS);
 
                 try {
                     PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(bookmarkFileName, true)));
-                    out.println(dateDiff + "secconds\r\n");
+                    out.println(dateDiff);
                     out.close();
                 } catch (IOException e) {
 

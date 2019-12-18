@@ -24,7 +24,7 @@ public class PlayActivity extends AppCompatActivity {
     private int mPlayerLength = 0;
     private List<Integer> mBookmarks = null;
     private int mBookmarksCurrentIndex = 0;
-    private int mOffset = -5; // seconds offset
+    private int mOffsetMs = -5000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +46,7 @@ public class PlayActivity extends AppCompatActivity {
         try (BufferedReader br = new BufferedReader(new FileReader(bookmarksFilePath))) {
             String line;
             while ((line = br.readLine()) != null) {
-                Integer parsed = intTryParse(line.replace("secconds", ""), -1);
+                Integer parsed = intTryParse(line, -1);
                 if(parsed < 0) continue;
                 mBookmarks.add(parsed);
             }
@@ -65,7 +65,7 @@ public class PlayActivity extends AppCompatActivity {
 
             view.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    seekWithOffset(bookmark * 1000);
+                    seekWithOffset(bookmark);
                 }});
 
             view.setPadding(0, 16, 0, 16);
@@ -108,7 +108,7 @@ public class PlayActivity extends AppCompatActivity {
     }
 
     private void seekWithOffset(int position) {
-        int offsetPostion = position + mOffset * 1000;
+        int offsetPostion = position + mOffsetMs;
         if(offsetPostion < 0) offsetPostion = 0;
         mPlayer.seekTo(offsetPostion);
     }
@@ -135,16 +135,17 @@ public class PlayActivity extends AppCompatActivity {
     }
 
     public void onNextBookmarkClick(View view) {
-        if(mBookmarksCurrentIndex >= mBookmarks.size() - 1) return;
+        int bookmarksSize = mBookmarks.size();
+        if(mBookmarksCurrentIndex >= bookmarksSize) return;
 
-        ++mBookmarksCurrentIndex;
-        seekWithOffset(mBookmarks.get(mBookmarksCurrentIndex) * 1000);
+        seekWithOffset(mBookmarks.get(mBookmarksCurrentIndex));
+        if(mBookmarksCurrentIndex < bookmarksSize - 1) ++mBookmarksCurrentIndex;
     }
 
     public void onPreviousBookmarkClick(View view) {
-        if(mBookmarksCurrentIndex < 1) return;
+        if(mBookmarksCurrentIndex < 0) return;
 
-        --mBookmarksCurrentIndex;
-        seekWithOffset(mBookmarks.get(mBookmarksCurrentIndex) * 1000);
+        seekWithOffset(mBookmarks.get(mBookmarksCurrentIndex));
+        if(mBookmarksCurrentIndex > 0) --mBookmarksCurrentIndex;
     }
 }
