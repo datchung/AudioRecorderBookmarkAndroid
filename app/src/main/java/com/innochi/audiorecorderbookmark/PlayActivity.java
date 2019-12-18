@@ -39,6 +39,12 @@ public class PlayActivity extends AppCompatActivity {
         loadBookmarks();
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        stopPlaying();
+    }
+
     private void loadBookmarks() {
         String bookmarksFilePath = mFilePath.replace(".3gp", ".txt");
         mBookmarks = new ArrayList<>();
@@ -98,16 +104,22 @@ public class PlayActivity extends AppCompatActivity {
     }
 
     private void pausePlaying() {
+        if(mPlayer == null) return;
+
         mPlayer.pause();
         mPlayerLength = mPlayer.getCurrentPosition();
     }
 
     private void stopPlaying() {
+        if(mPlayer == null) return;
+
         mPlayer.release();
         mPlayer = null;
     }
 
     private void seekWithOffset(int position) {
+        if(mPlayer == null) return;
+
         int offsetPostion = position + mOffsetMs;
         if(offsetPostion < 0) offsetPostion = 0;
         mPlayer.seekTo(offsetPostion);
