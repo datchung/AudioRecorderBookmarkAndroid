@@ -36,7 +36,7 @@ public class PlayActivity extends AppCompatActivity {
 
         startPlaying();
 
-        loadBookmarks();
+        initializeBookmarks();
     }
 
     @Override
@@ -45,22 +45,9 @@ public class PlayActivity extends AppCompatActivity {
         stopPlaying();
     }
 
-    private void loadBookmarks() {
-        String bookmarksFilePath = mFilePath.replace(AppStorage.AUDIO_FILE_EXTENSION, AppStorage.BOOKMARK_FILE_EXTENSION);
-        mBookmarks = new ArrayList<>();
-
-        try (BufferedReader br = new BufferedReader(new FileReader(bookmarksFilePath))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                Integer parsed = intTryParse(line, -1);
-                if(parsed < 0) continue;
-                mBookmarks.add(parsed);
-            }
-
-            populateBookmarks();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private void initializeBookmarks() {
+        mBookmarks = AppStorage.loadBookmarks(mFilePath.replace(AppStorage.AUDIO_FILE_EXTENSION, AppStorage.BOOKMARK_FILE_EXTENSION));
+        populateBookmarks();
     }
 
     private void populateBookmarks() {
@@ -80,15 +67,6 @@ public class PlayActivity extends AppCompatActivity {
                     new LinearLayout.LayoutParams(
                             ViewGroup.LayoutParams.WRAP_CONTENT,
                             ViewGroup.LayoutParams.WRAP_CONTENT));
-        }
-    }
-
-    // https://stackoverflow.com/a/8392032/4856020
-    public Integer intTryParse(String value, int defaultVal) {
-        try {
-            return Integer.parseInt(value);
-        } catch (NumberFormatException e) {
-            return defaultVal;
         }
     }
 
