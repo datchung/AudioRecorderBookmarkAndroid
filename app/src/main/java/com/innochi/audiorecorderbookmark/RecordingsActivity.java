@@ -31,7 +31,7 @@ public class RecordingsActivity extends AppCompatActivity {
 
         for (final File file : mFiles) {
             TextView view = new TextView(this);
-            view.setText(file.getName());
+            view.setText(getFilenameWithoutExtension(file));
 
             final RecordingsActivity self = this;
             view.setOnClickListener(new View.OnClickListener() {
@@ -48,5 +48,14 @@ public class RecordingsActivity extends AppCompatActivity {
                             ViewGroup.LayoutParams.WRAP_CONTENT,
                             ViewGroup.LayoutParams.WRAP_CONTENT));
         }
+    }
+
+    private static String getFilenameWithoutExtension(File file) {
+        String fileName = file.getName();
+        int pos = fileName.lastIndexOf(".");
+        if (pos > 0 && pos < (fileName.length() - 1)) { // If '.' is not the first or last character.
+            fileName = fileName.substring(0, pos);
+        }
+        return fileName;
     }
 }
