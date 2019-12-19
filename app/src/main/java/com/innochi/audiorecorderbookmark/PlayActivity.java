@@ -35,6 +35,9 @@ public class PlayActivity extends AppCompatActivity {
         Intent intent = getIntent();
         mFilePath = intent.getStringExtra("filePath");
 
+        TextView titleView = findViewById(R.id.playRecordingTitle);
+        if(titleView != null) titleView.setText(FileUtils.getFilenameWithoutDirectoryAndExtension(mFilePath));
+
         startPlaying();
 
         initializeBookmarks();
