@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 // Inspired by https://developer.android.com/guide/topics/media/mediarecorder#java
 public class RecordActivity extends AppCompatActivity {
 
-    private static final String LOG_TAG = "AudioRecordTest";
+    private static final String LOG_TAG = "AudioRecordBookmark";
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
     private static String FileName = null;
     private static String BookmarkFileName = null;
