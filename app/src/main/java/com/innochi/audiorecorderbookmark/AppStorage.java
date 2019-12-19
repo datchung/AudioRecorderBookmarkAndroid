@@ -7,6 +7,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public final class AppStorage {
@@ -27,6 +29,7 @@ public final class AppStorage {
             filteredFiles.add(file);
         }
 
+        Collections.sort(filteredFiles, new SortByFilename());
         return filteredFiles;
     }
 
