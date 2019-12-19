@@ -125,6 +125,7 @@ public class RecordActivity extends AppCompatActivity {
             out.println(dateDiff);
             out.close();
         } catch (IOException e) {
+            // TODO: handle error
         }
     }
 
