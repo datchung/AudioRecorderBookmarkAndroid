@@ -70,7 +70,7 @@ public class PlayActivity extends AppCompatActivity {
 
             layout.addView(view,
                     new LinearLayout.LayoutParams(
-                            ViewGroup.LayoutParams.WRAP_CONTENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.WRAP_CONTENT));
         }
     }

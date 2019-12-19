@@ -42,10 +42,12 @@ public class RecordingsActivity extends AppCompatActivity {
                 }});
 
             view.setPadding(0, 16, 0, 16);
+//            view.setLayoutParams(new ViewGroup.MarginLayoutParams
+//                    (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
             layout.addView(view,
                     new LinearLayout.LayoutParams(
-                            ViewGroup.LayoutParams.WRAP_CONTENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.WRAP_CONTENT));
         }
     }
