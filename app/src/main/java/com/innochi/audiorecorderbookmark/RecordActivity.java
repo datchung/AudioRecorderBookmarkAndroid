@@ -5,17 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.pm.PackageManager;
-import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.LinearLayout;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -30,38 +26,30 @@ public class RecordActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "AudioRecordTest";
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
-    private static String fileName = null;
-    private static String bookmarkFileName = null;
+    private static String FileName = null;
+    private static String BookmarkFileName = null;
 
     private boolean mIsRecording = false;
-    private MediaRecorder recorder = null;
-    private Date recordStartDate = null;
+    private MediaRecorder mRecorder = null;
+    private Date mRecordStartDate = null;
 
     // Requesting permission to RECORD_AUDIO
-    private boolean permissionToRecordAccepted = false;
-    private String [] permissions = {Manifest.permission.RECORD_AUDIO};
+    private boolean mPermissionToRecordAccepted = false;
+    private String [] mPermissions = {Manifest.permission.RECORD_AUDIO};
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode){
             case REQUEST_RECORD_AUDIO_PERMISSION:
-                permissionToRecordAccepted  = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                mPermissionToRecordAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
                 break;
         }
-        if (!permissionToRecordAccepted ) finish();
-    }
-
-    private void onRecord(boolean start) {
-        if (start) {
-            startRecording();
-        } else {
-            stopRecording();
-        }
+        if (!mPermissionToRecordAccepted) finish();
     }
 
     private void startRecording() {
-        ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
+        ActivityCompat.requestPermissions(this, mPermissions, REQUEST_RECORD_AUDIO_PERMISSION);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -69,25 +57,25 @@ public class RecordActivity extends AppCompatActivity {
         updateRecordButtonText();
 
         // Record to the external cache directory for visibility
-        recordStartDate = new Date();
+        mRecordStartDate = new Date();
         String rootDirectoryPath = AppStorage.getAppRootDirectoryPath(this);
-        String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(recordStartDate);
-        fileName = rootDirectoryPath + timeStamp + AppStorage.AUDIO_FILE_EXTENSION;
-        bookmarkFileName = rootDirectoryPath + timeStamp + AppStorage.BOOKMARK_FILE_EXTENSION;
+        String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(mRecordStartDate);
+        FileName = rootDirectoryPath + timeStamp + AppStorage.AUDIO_FILE_EXTENSION;
+        BookmarkFileName = rootDirectoryPath + timeStamp + AppStorage.BOOKMARK_FILE_EXTENSION;
 
-        recorder = new MediaRecorder();
-        recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        recorder.setOutputFile(fileName);
-        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        mRecorder = new MediaRecorder();
+        mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        mRecorder.setOutputFile(FileName);
+        mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
         try {
-            recorder.prepare();
+            mRecorder.prepare();
         } catch (IOException e) {
             Log.e(LOG_TAG, "prepare() failed");
         }
 
-        recorder.start();
+        mRecorder.start();
     }
 
     private void stopRecording() {
@@ -96,14 +84,14 @@ public class RecordActivity extends AppCompatActivity {
         mIsRecording = false;
         updateRecordButtonText();
 
-        recordStartDate = null;
-        fileName = null;
-        bookmarkFileName = null;
+        mRecordStartDate = null;
+        FileName = null;
+        BookmarkFileName = null;
 
-        if(recorder == null) return;
-        recorder.stop();
-        recorder.release();
-        recorder = null;
+        if(mRecorder == null) return;
+        mRecorder.stop();
+        mRecorder.release();
+        mRecorder = null;
     }
 
     public void onRecordClick(View view) {
@@ -118,10 +106,10 @@ public class RecordActivity extends AppCompatActivity {
 
     public void onBookmarkClick(View view) {
         Date bookmarkDate = new Date();
-        long dateDiff = getDateDiff(recordStartDate, bookmarkDate, TimeUnit.MILLISECONDS);
+        long dateDiff = getDateDiff(mRecordStartDate, bookmarkDate, TimeUnit.MILLISECONDS);
 
         try {
-            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(bookmarkFileName, true)));
+            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(BookmarkFileName, true)));
             out.println(dateDiff);
             out.close();
         } catch (IOException e) {
