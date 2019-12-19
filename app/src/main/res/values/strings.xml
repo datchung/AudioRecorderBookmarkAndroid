@@ -6,4 +6,7 @@
     <string name="pause">Pause</string>
     <string name="stop">Stop</string>
     <string name="previousBookmark">Previous Bookmark</string>
+    <string name="startRecording">Start Recording</string>
+    <string name="bookmark">Bookmark</string>
+    <string name="stopRecording">Stop Recording</string>
 </resources>

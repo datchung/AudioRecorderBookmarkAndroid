@@ -33,11 +33,8 @@ public class RecordActivity extends AppCompatActivity {
     private static String fileName = null;
     private static String bookmarkFileName = null;
 
-    private RecordButton recordButton = null;
+    private boolean mIsRecording = false;
     private MediaRecorder recorder = null;
-
-    private BookmarkButton bookmarkButton = null;
-
     private Date recordStartDate = null;
 
     // Requesting permission to RECORD_AUDIO
@@ -64,12 +61,19 @@ public class RecordActivity extends AppCompatActivity {
     }
 
     private void startRecording() {
-        recordStartDate = new Date();
-        String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(recordStartDate);
-        fileName += timeStamp + AppStorage.AUDIO_FILE_EXTENSION;
-        bookmarkFileName += timeStamp + AppStorage.BOOKMARK_FILE_EXTENSION;
+        ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        mIsRecording = true;
+        updateRecordButtonText();
+
+        // Record to the external cache directory for visibility
+        recordStartDate = new Date();
+        String rootDirectoryPath = AppStorage.getAppRootDirectoryPath(this);
+        String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(recordStartDate);
+        fileName = rootDirectoryPath + timeStamp + AppStorage.AUDIO_FILE_EXTENSION;
+        bookmarkFileName = rootDirectoryPath + timeStamp + AppStorage.BOOKMARK_FILE_EXTENSION;
 
         recorder = new MediaRecorder();
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
@@ -87,98 +91,58 @@ public class RecordActivity extends AppCompatActivity {
     }
 
     private void stopRecording() {
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        mIsRecording = false;
+        updateRecordButtonText();
+
+        recordStartDate = null;
+        fileName = null;
+        bookmarkFileName = null;
+
+        if(recorder == null) return;
         recorder.stop();
         recorder.release();
         recorder = null;
-
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
-    class RecordButton extends Button {
-        boolean mStartRecording = true;
+    public void onRecordClick(View view) {
+        if(!mIsRecording) startRecording();
+        else stopRecording();
+    }
 
-        OnClickListener clicker = new OnClickListener() {
-            public void onClick(View v) {
-                onRecord(mStartRecording);
-                if (mStartRecording) {
-                    setText("Stop recording");
-                } else {
-                    setText("Start recording");
-                }
-                mStartRecording = !mStartRecording;
-            }
-        };
+    public void updateRecordButtonText() {
+        Button button = findViewById(R.id.startStopRecordButton);
+        if(button != null) button.setText(mIsRecording ? R.string.stopRecording : R.string.startRecording);
+    }
 
-        public RecordButton(Context ctx) {
-            super(ctx);
-            setText("Start recording");
-            setOnClickListener(clicker);
+    public void onBookmarkClick(View view) {
+        Date bookmarkDate = new Date();
+        long dateDiff = getDateDiff(recordStartDate, bookmarkDate, TimeUnit.MILLISECONDS);
+
+        try {
+            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(bookmarkFileName, true)));
+            out.println(dateDiff);
+            out.close();
+        } catch (IOException e) {
         }
     }
 
     public static long getDateDiff(Date date1, Date date2, TimeUnit timeUnit) {
-        long diffInMillies = date2.getTime() - date1.getTime();
-        return timeUnit.convert(diffInMillies, TimeUnit.MILLISECONDS);
-    }
-
-    class BookmarkButton extends Button {
-        OnClickListener clicker = new OnClickListener() {
-            public void onClick(View v) {
-                Date bookmarkDate = new Date();
-
-                long dateDiff = getDateDiff(recordStartDate, bookmarkDate, TimeUnit.MILLISECONDS);
-
-                try {
-                    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(bookmarkFileName, true)));
-                    out.println(dateDiff);
-                    out.close();
-                } catch (IOException e) {
-
-                }
-            }
-        };
-
-        public BookmarkButton(Context ctx) {
-            super(ctx);
-            setText("Bookmark");
-            setOnClickListener(clicker);
-        }
+        long diffInMs = date2.getTime() - date1.getTime();
+        return timeUnit.convert(diffInMs, TimeUnit.MILLISECONDS);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
-
-        // Record to the external cache directory for visibility
-        fileName = AppStorage.getAppRootDirectoryPath(this);
-        bookmarkFileName = fileName;
-
-        ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
-
-        LinearLayout ll = new LinearLayout(this);
-        ll.setOrientation(LinearLayout.VERTICAL);
-        recordButton = new RecordButton(this);
-        ll.addView(recordButton,
-                new LinearLayout.LayoutParams(
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        0));
-        bookmarkButton = new BookmarkButton(this);
-        ll.addView(bookmarkButton,
-                new LinearLayout.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        1));
-        setContentView(ll);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (recorder != null) {
-            recorder.release();
-            recorder = null;
-        }
+
+        stopRecording();
     }
 }
