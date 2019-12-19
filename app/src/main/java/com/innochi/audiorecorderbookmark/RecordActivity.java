@@ -26,8 +26,8 @@ public class RecordActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "AudioRecordBookmark";
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
-    private static String FileName = null;
-    private static String BookmarkFileName = null;
+    private String mAudioFileName = null;
+    private String mBookmarkFileName = null;
 
     private boolean mIsRecording = false;
     private MediaRecorder mRecorder = null;
@@ -60,13 +60,13 @@ public class RecordActivity extends AppCompatActivity {
         mRecordStartDate = new Date();
         String rootDirectoryPath = AppStorage.getAppRootDirectoryPath(this);
         String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(mRecordStartDate);
-        FileName = rootDirectoryPath + timeStamp + AppStorage.AUDIO_FILE_EXTENSION;
-        BookmarkFileName = rootDirectoryPath + timeStamp + AppStorage.BOOKMARK_FILE_EXTENSION;
+        mAudioFileName = rootDirectoryPath + timeStamp + AppStorage.AUDIO_FILE_EXTENSION;
+        mBookmarkFileName = rootDirectoryPath + timeStamp + AppStorage.BOOKMARK_FILE_EXTENSION;
 
         mRecorder = new MediaRecorder();
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        mRecorder.setOutputFile(FileName);
+        mRecorder.setOutputFile(mAudioFileName);
         mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
         try {
@@ -85,8 +85,8 @@ public class RecordActivity extends AppCompatActivity {
         updateRecordButtonText();
 
         mRecordStartDate = null;
-        FileName = null;
-        BookmarkFileName = null;
+        mAudioFileName = null;
+        mBookmarkFileName = null;
 
         if(mRecorder == null) return;
         mRecorder.stop();
@@ -109,7 +109,7 @@ public class RecordActivity extends AppCompatActivity {
         long dateDiff = getDateDiff(mRecordStartDate, bookmarkDate, TimeUnit.MILLISECONDS);
 
         try {
-            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(BookmarkFileName, true)));
+            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(mBookmarkFileName, true)));
             out.println(dateDiff);
             out.close();
         } catch (IOException e) {
