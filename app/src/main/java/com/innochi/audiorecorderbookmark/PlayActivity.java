@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,7 +55,11 @@ public class PlayActivity extends AppCompatActivity {
         LinearLayout layout = findViewById(R.id.bookmarksLayout);
         for(final Integer bookmark: mBookmarks) {
             TextView view = new TextView(this);
-            view.setText(bookmark.toString());
+
+            int hours   = (int) ((bookmark / (1000*60*60)) % 24);
+            int minutes = (int) ((bookmark / (1000*60)) % 60);
+            int seconds = (int) (bookmark / 1000) % 60;
+            view.setText(String.format("%02d:%02d:%02d", hours, minutes, seconds));
 
             view.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
