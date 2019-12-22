@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.MemoryFile;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
@@ -20,7 +21,7 @@ import java.util.List;
 
 public class PlayActivity extends AppCompatActivity {
 
-    private MediaPlayer mPlayer = null;
+    private MusicPlayer mPlayer = null;
     private String mFilePath = null;
     private int mPlayerLength = 0;
     private List<Integer> mBookmarks = null;
@@ -38,7 +39,8 @@ public class PlayActivity extends AppCompatActivity {
         TextView titleView = findViewById(R.id.playRecordingTitle);
         if(titleView != null) titleView.setText(FileUtils.getFilenameWithoutDirectoryAndExtension(mFilePath));
 
-        startPlaying();
+        mPlayer = new MusicPlayer(mFilePath, mOffsetMs);
+        mPlayer.startPlaying();
 
         initializeBookmarks();
     }
@@ -46,7 +48,7 @@ public class PlayActivity extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
-        stopPlaying();
+        mPlayer.stopPlaying();
     }
 
     private void initializeBookmarks() {
@@ -70,7 +72,7 @@ public class PlayActivity extends AppCompatActivity {
 
             view.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    seekWithOffset(bookmark);
+                    mPlayer.seekWithOffset(bookmark);
                 }});
 
             view.setPadding(0, 16, 0, 16);
@@ -82,41 +84,6 @@ public class PlayActivity extends AppCompatActivity {
         }
     }
 
-    private void startPlaying() {
-        mPlayer = new MediaPlayer();
-        try {
-            mPlayer.setDataSource(mFilePath);
-            mPlayer.prepare();
-            mPlayer.start();
-        } catch (IOException e) {
-            Log.e("", "prepare() failed");
-        }
-    }
-
-    private void pausePlaying() {
-        if(mPlayer == null) return;
-
-        mPlayer.pause();
-        mPlayerLength = mPlayer.getCurrentPosition();
-    }
-
-    private void stopPlaying() {
-        if(mPlayer == null) return;
-
-        mPlayer.release();
-        mPlayer = null;
-    }
-
-    private void seekWithOffset(int position) {
-        if(mPlayer == null) return;
-
-        int offsetPostion = position + mOffsetMs;
-        if(offsetPostion < 0) offsetPostion = 0;
-        mPlayer.seekTo(offsetPostion);
-
-        updateRecordingPositionDisplay(offsetPostion);
-    }
-
     private void updateRecordingPositionDisplay(int position) {
         TextView view = findViewById(R.id.recordingPosition);
         if(view == null) return;
@@ -126,23 +93,23 @@ public class PlayActivity extends AppCompatActivity {
 
     public void onPlayClick(View view) {
         if(mPlayer == null) {
-            startPlaying();
+            mPlayer.startPlaying();
             return;
         }
 
         if(mPlayer.isPlaying()) return;
 
         // Resume
-        seekWithOffset(mPlayerLength);
-        mPlayer.start();
+        mPlayer.seekWithOffset(mPlayerLength);
+        mPlayer.resume();
     }
 
     public void onPauseClick(View view) {
-        pausePlaying();
+        mPlayer.pausePlaying();
     }
 
     public void onStopClick(View view) {
-        stopPlaying();
+        mPlayer.stopPlaying();
     }
 
     public void onNextBookmarkClick(View view) {
@@ -150,13 +117,13 @@ public class PlayActivity extends AppCompatActivity {
         if(mBookmarksCurrentIndex >= bookmarksSize - 1) return;
 
         ++mBookmarksCurrentIndex;
-        seekWithOffset(mBookmarks.get(mBookmarksCurrentIndex));
+        mPlayer.seekWithOffset(mBookmarks.get(mBookmarksCurrentIndex));
     }
 
     public void onPreviousBookmarkClick(View view) {
         if(mBookmarksCurrentIndex < 1) return;
 
         --mBookmarksCurrentIndex;
-        seekWithOffset(mBookmarks.get(mBookmarksCurrentIndex));
+        mPlayer.seekWithOffset(mBookmarks.get(mBookmarksCurrentIndex));
     }
 }
