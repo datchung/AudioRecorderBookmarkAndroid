@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.MediaController;
 import android.widget.TextView;
 
 import java.io.BufferedReader;
@@ -19,9 +20,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlayActivity extends AppCompatActivity {
+public class PlayActivity extends AppCompatActivity implements MediaController.MediaPlayerControl {
 
     private MusicPlayer mPlayer = null;
+    private MusicController controller = null;
     private String mFilePath = null;
     private int mOffsetMs = -5000;
 
@@ -41,12 +43,35 @@ public class PlayActivity extends AppCompatActivity {
 
         mPlayer = new MusicPlayer(mFilePath, bookmarks, mOffsetMs);
         mPlayer.startPlaying();
+
+        setController();
     }
 
     @Override
     public void onStop() {
         super.onStop();
         mPlayer.stopPlaying();
+    }
+
+    private void setController(){
+        //set the controller up
+        controller = new MusicController(this);
+
+        controller.setPrevNextListeners(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onPreviousBookmarkClick(v);
+            }
+        }, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onNextBookmarkClick(v);
+            }
+        });
+
+        controller.setMediaPlayer(this);
+        controller.setAnchorView(findViewById(R.id.playRecordingTitle));
+        controller.setEnabled(true);
     }
 
     private List<Integer> getBookmarks() {
@@ -107,4 +132,59 @@ public class PlayActivity extends AppCompatActivity {
     public void onNextBookmarkClick(View view) { mPlayer.seekToNextBookmark(); }
 
     public void onPreviousBookmarkClick(View view) { mPlayer.seekToPreviousBookmark(); }
+
+    @Override
+    public void start() {
+        mPlayer.start();
+    }
+
+    @Override
+    public void pause() {
+        mPlayer.pausePlaying();
+    }
+
+    @Override
+    public int getDuration() {
+        return mPlayer.getDuration();
+    }
+
+    @Override
+    public int getCurrentPosition() {
+        return mPlayer.getPosition();
+    }
+
+    @Override
+    public void seekTo(int i) {
+        mPlayer.seek(i);
+    }
+
+    @Override
+    public boolean isPlaying() {
+        return mPlayer.isPlaying();
+    }
+
+    @Override
+    public int getBufferPercentage() {
+        return 0;
+    }
+
+    @Override
+    public boolean canPause() {
+        return true;
+    }
+
+    @Override
+    public boolean canSeekBackward() {
+        return true;
+    }
+
+    @Override
+    public boolean canSeekForward() {
+        return true;
+    }
+
+    @Override
+    public int getAudioSessionId() {
+        return 0;
+    }
 }

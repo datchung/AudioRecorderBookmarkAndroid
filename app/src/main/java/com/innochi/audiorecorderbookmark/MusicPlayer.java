@@ -9,7 +9,6 @@ import java.util.List;
 public class MusicPlayer {
     private MediaPlayer mPlayer = null;
     private String mFilePath = null;
-    private int mPlayerLength = 0;
     private int mOffsetMs = 0;
     private List<Integer> mBookmarks = null;
     private int mBookmarksCurrentIndex = -1;
@@ -19,6 +18,10 @@ public class MusicPlayer {
         mBookmarks = bookmarks;
         mOffsetMs = offsetMs;
     }
+
+//    public MediaPlayer getPlayer() {
+//        return mPlayer;
+//    }
 
     public void startPlaying() {
         mPlayer = new MediaPlayer();
@@ -35,7 +38,6 @@ public class MusicPlayer {
         if(mPlayer == null) return;
 
         mPlayer.pause();
-        mPlayerLength = mPlayer.getCurrentPosition();
     }
 
     public void stopPlaying() {
@@ -50,7 +52,7 @@ public class MusicPlayer {
     }
 
     public void resume() {
-        mPlayer.seekTo(mPlayerLength);
+        mPlayer.seekTo(mPlayer.getCurrentPosition());
         mPlayer.start();
     }
 
@@ -77,5 +79,21 @@ public class MusicPlayer {
 
         --mBookmarksCurrentIndex;
         seekWithOffset(mBookmarks.get(mBookmarksCurrentIndex));
+    }
+
+    public int getPosition(){
+        return mPlayer.getCurrentPosition();
+    }
+
+    public int getDuration(){
+        return mPlayer.getDuration();
+    }
+
+    public void seek(int position){
+        mPlayer.seekTo(position);
+    }
+
+    public void start(){
+        mPlayer.start();
     }
 }
