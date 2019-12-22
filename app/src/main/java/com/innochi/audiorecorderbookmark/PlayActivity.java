@@ -24,7 +24,7 @@ public class PlayActivity extends AppCompatActivity {
     private String mFilePath = null;
     private int mPlayerLength = 0;
     private List<Integer> mBookmarks = null;
-    private int mBookmarksCurrentIndex = 0;
+    private int mBookmarksCurrentIndex = -1;
     private int mOffsetMs = -5000;
 
     @Override
@@ -147,16 +147,16 @@ public class PlayActivity extends AppCompatActivity {
 
     public void onNextBookmarkClick(View view) {
         int bookmarksSize = mBookmarks.size();
-        if(mBookmarksCurrentIndex >= bookmarksSize) return;
+        if(mBookmarksCurrentIndex >= bookmarksSize - 1) return;
 
+        ++mBookmarksCurrentIndex;
         seekWithOffset(mBookmarks.get(mBookmarksCurrentIndex));
-        if(mBookmarksCurrentIndex < bookmarksSize - 1) ++mBookmarksCurrentIndex;
     }
 
     public void onPreviousBookmarkClick(View view) {
-        if(mBookmarksCurrentIndex < 0) return;
+        if(mBookmarksCurrentIndex < 1) return;
 
+        --mBookmarksCurrentIndex;
         seekWithOffset(mBookmarks.get(mBookmarksCurrentIndex));
-        if(mBookmarksCurrentIndex > 0) --mBookmarksCurrentIndex;
     }
 }
