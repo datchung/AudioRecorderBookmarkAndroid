@@ -4,15 +4,19 @@ import android.media.MediaPlayer;
 import android.util.Log;
 
 import java.io.IOException;
+import java.util.List;
 
 public class MusicPlayer {
     private MediaPlayer mPlayer = null;
     private String mFilePath = null;
     private int mPlayerLength = 0;
     private int mOffsetMs = 0;
+    private List<Integer> mBookmarks = null;
+    private int mBookmarksCurrentIndex = -1;
 
-    public MusicPlayer(String filePath, int offsetMs) {
+    public MusicPlayer(String filePath, List<Integer> bookmarks, int offsetMs) {
         mFilePath = filePath;
+        mBookmarks = bookmarks;
         mOffsetMs = offsetMs;
     }
 
@@ -46,16 +50,32 @@ public class MusicPlayer {
     }
 
     public void resume() {
+        mPlayer.seekTo(mPlayerLength);
         mPlayer.start();
     }
 
-    public void seekWithOffset(int position) {
-        if(mPlayer == null) return;
+    public int seekWithOffset(int position) {
+        if(mPlayer == null) return 0;
 
-        int offsetPostion = position + mOffsetMs;
-        if(offsetPostion < 0) offsetPostion = 0;
-        mPlayer.seekTo(offsetPostion);
+        int offsetPosition = position + mOffsetMs;
+        if(offsetPosition < 0) offsetPosition = 0;
+        mPlayer.seekTo(offsetPosition);
 
-        //updateRecordingPositionDisplay(offsetPostion);
+        return offsetPosition;
+    }
+
+    public void seekToNextBookmark() {
+        int bookmarksSize = mBookmarks.size();
+        if(mBookmarksCurrentIndex >= bookmarksSize - 1) return;
+
+        ++mBookmarksCurrentIndex;
+        seekWithOffset(mBookmarks.get(mBookmarksCurrentIndex));
+    }
+
+    public void seekToPreviousBookmark() {
+        if(mBookmarksCurrentIndex < 1) return;
+
+        --mBookmarksCurrentIndex;
+        seekWithOffset(mBookmarks.get(mBookmarksCurrentIndex));
     }
 }

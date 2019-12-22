@@ -23,9 +23,6 @@ public class PlayActivity extends AppCompatActivity {
 
     private MusicPlayer mPlayer = null;
     private String mFilePath = null;
-    private int mPlayerLength = 0;
-    private List<Integer> mBookmarks = null;
-    private int mBookmarksCurrentIndex = -1;
     private int mOffsetMs = -5000;
 
     @Override
@@ -39,10 +36,11 @@ public class PlayActivity extends AppCompatActivity {
         TextView titleView = findViewById(R.id.playRecordingTitle);
         if(titleView != null) titleView.setText(FileUtils.getFilenameWithoutDirectoryAndExtension(mFilePath));
 
-        mPlayer = new MusicPlayer(mFilePath, mOffsetMs);
-        mPlayer.startPlaying();
+        List<Integer> bookmarks = getBookmarks();
+        populateBookmarks(bookmarks);
 
-        initializeBookmarks();
+        mPlayer = new MusicPlayer(mFilePath, bookmarks, mOffsetMs);
+        mPlayer.startPlaying();
     }
 
     @Override
@@ -51,9 +49,8 @@ public class PlayActivity extends AppCompatActivity {
         mPlayer.stopPlaying();
     }
 
-    private void initializeBookmarks() {
-        mBookmarks = AppStorage.loadBookmarks(mFilePath.replace(AppStorage.AUDIO_FILE_EXTENSION, AppStorage.BOOKMARK_FILE_EXTENSION));
-        populateBookmarks();
+    private List<Integer> getBookmarks() {
+        return AppStorage.loadBookmarks(mFilePath.replace(AppStorage.AUDIO_FILE_EXTENSION, AppStorage.BOOKMARK_FILE_EXTENSION));
     }
 
     private static String msToHhmmss(int ms) {
@@ -63,16 +60,17 @@ public class PlayActivity extends AppCompatActivity {
         return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
 
-    private void populateBookmarks() {
+    private void populateBookmarks(List<Integer> bookmarks) {
         LinearLayout layout = findViewById(R.id.bookmarksLayout);
-        for(final Integer bookmark: mBookmarks) {
+        for(final Integer bookmark: bookmarks) {
             TextView view = new TextView(this);
 
             view.setText(msToHhmmss(bookmark));
 
             view.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    mPlayer.seekWithOffset(bookmark);
+                    int offsetPosition = mPlayer.seekWithOffset(bookmark);
+                    updateRecordingPositionDisplay(offsetPosition);
                 }});
 
             view.setPadding(0, 16, 0, 16);
@@ -92,15 +90,9 @@ public class PlayActivity extends AppCompatActivity {
     }
 
     public void onPlayClick(View view) {
-        if(mPlayer == null) {
-            mPlayer.startPlaying();
-            return;
-        }
-
+        if(mPlayer == null) return;
         if(mPlayer.isPlaying()) return;
 
-        // Resume
-        mPlayer.seekWithOffset(mPlayerLength);
         mPlayer.resume();
     }
 
@@ -112,18 +104,7 @@ public class PlayActivity extends AppCompatActivity {
         mPlayer.stopPlaying();
     }
 
-    public void onNextBookmarkClick(View view) {
-        int bookmarksSize = mBookmarks.size();
-        if(mBookmarksCurrentIndex >= bookmarksSize - 1) return;
+    public void onNextBookmarkClick(View view) { mPlayer.seekToNextBookmark(); }
 
-        ++mBookmarksCurrentIndex;
-        mPlayer.seekWithOffset(mBookmarks.get(mBookmarksCurrentIndex));
-    }
-
-    public void onPreviousBookmarkClick(View view) {
-        if(mBookmarksCurrentIndex < 1) return;
-
-        --mBookmarksCurrentIndex;
-        mPlayer.seekWithOffset(mBookmarks.get(mBookmarksCurrentIndex));
-    }
+    public void onPreviousBookmarkClick(View view) { mPlayer.seekToPreviousBookmark(); }
 }
