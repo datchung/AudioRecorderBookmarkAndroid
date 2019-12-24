@@ -165,7 +165,7 @@ public class PlayActivity extends AppCompatActivity implements MediaController.M
     }
 
     private void scrollToView(final View view){
-        final ScrollView scrollView = (ScrollView)findViewById(R.id.bookmarksScrollView);
+        final ScrollView scrollView = findViewById(R.id.bookmarksScrollView);
         if(scrollView == null) return;
 
         scrollView.post(new Runnable() {
