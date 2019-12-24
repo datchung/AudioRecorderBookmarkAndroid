@@ -3,6 +3,7 @@ package com.innochi.audiorecorderbookmark;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,6 +85,7 @@ public class PlayActivity extends AppCompatActivity implements MediaController.M
         for(final Integer bookmark: bookmarks) {
             TextView view = new TextView(this);
 
+            view.setTag(bookmark);
             view.setText(msToHhmmss(bookmark));
 
             view.setOnClickListener(new View.OnClickListener() {
@@ -123,9 +125,37 @@ public class PlayActivity extends AppCompatActivity implements MediaController.M
         mPlayer.stopPlaying();
     }
 
-    public void onNextBookmarkClick(View view) { mPlayer.seekToNextBookmark(); }
+    public void onNextBookmarkClick(View view) {
+        int bookmarkBeforeSeek = mPlayer.getCurrentBookmark();
+        int bookmark = mPlayer.seekToNextBookmark();
+        View bookmarksView = findViewById(R.id.bookmarksLayout);
 
-    public void onPreviousBookmarkClick(View view) { mPlayer.seekToPreviousBookmark(); }
+        if(bookmarkBeforeSeek >= 0 && bookmark >= 0) {
+            View bookmarkViewBeforeSeek = bookmarksView.findViewWithTag(bookmarkBeforeSeek);
+            if(bookmarkViewBeforeSeek != null) bookmarkViewBeforeSeek.setBackgroundColor(Color.WHITE);
+        }
+
+        if(bookmark >= 0) {
+            View bookmarkView = bookmarksView.findViewWithTag(bookmark);
+            if(bookmarkView != null) bookmarkView.setBackgroundColor(Color.GREEN);
+        }
+    }
+
+    public void onPreviousBookmarkClick(View view) {
+        int bookmarkBeforeSeek = mPlayer.getCurrentBookmark();
+        int bookmark = mPlayer.seekToPreviousBookmark();
+        View bookmarksView = findViewById(R.id.bookmarksLayout);
+
+        if(bookmarkBeforeSeek >= 0 && bookmark >= 0) {
+            View bookmarkViewBeforeSeek = bookmarksView.findViewWithTag(bookmarkBeforeSeek);
+            if(bookmarkViewBeforeSeek != null) bookmarkViewBeforeSeek.setBackgroundColor(Color.WHITE);
+        }
+
+        if(bookmark >= 0) {
+            View bookmarkView = bookmarksView.findViewWithTag(bookmark);
+            if(bookmarkView != null) bookmarkView.setBackgroundColor(Color.GREEN);
+        }
+    }
 
     @Override
     public void start() {

@@ -62,19 +62,28 @@ public class MusicPlayer {
         return offsetPosition;
     }
 
-    public void seekToNextBookmark() {
+    public int seekToNextBookmark() {
         int bookmarksSize = mBookmarks.size();
-        if(mBookmarksCurrentIndex >= bookmarksSize - 1) return;
+        if(mBookmarksCurrentIndex >= bookmarksSize - 1) return -1;
 
         ++mBookmarksCurrentIndex;
-        seekWithOffset(mBookmarks.get(mBookmarksCurrentIndex));
+        int bookmark = mBookmarks.get(mBookmarksCurrentIndex);
+        seekWithOffset(bookmark);
+        return bookmark;
     }
 
-    public void seekToPreviousBookmark() {
-        if(mBookmarksCurrentIndex < 1) return;
+    public int seekToPreviousBookmark() {
+        if(mBookmarksCurrentIndex < 1) return -1;
 
         --mBookmarksCurrentIndex;
-        seekWithOffset(mBookmarks.get(mBookmarksCurrentIndex));
+        int bookmark = mBookmarks.get(mBookmarksCurrentIndex);
+        seekWithOffset(bookmark);
+        return bookmark;
+    }
+
+    public int getCurrentBookmark() {
+        if(mBookmarksCurrentIndex < 0) return -1;
+        return mBookmarks.get(mBookmarksCurrentIndex);
     }
 
     public int getPosition(){
