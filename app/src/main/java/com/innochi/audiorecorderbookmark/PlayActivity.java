@@ -130,26 +130,17 @@ public class PlayActivity extends AppCompatActivity implements MediaController.M
         int bookmarkBeforeSeek = mPlayer.getCurrentBookmark();
         int bookmark = mPlayer.seekToNextBookmark();
         View bookmarksView = findViewById(R.id.bookmarksLayout);
-
-        if(bookmarkBeforeSeek >= 0 && bookmark >= 0) {
-            View bookmarkViewBeforeSeek = bookmarksView.findViewWithTag(bookmarkBeforeSeek);
-            if(bookmarkViewBeforeSeek != null) bookmarkViewBeforeSeek.setBackgroundColor(Color.WHITE);
-        }
-
-        if(bookmark >= 0) {
-            View bookmarkView = bookmarksView.findViewWithTag(bookmark);
-            if(bookmarkView != null) {
-                bookmarkView.setBackgroundColor(Color.GREEN);
-                scrollToView(bookmarkView);
-            }
-        }
+        setBookmarkHighlight(bookmarkBeforeSeek, bookmark, bookmarksView);
     }
 
     public void onPreviousBookmarkClick(View view) {
         int bookmarkBeforeSeek = mPlayer.getCurrentBookmark();
         int bookmark = mPlayer.seekToPreviousBookmark();
         View bookmarksView = findViewById(R.id.bookmarksLayout);
+        setBookmarkHighlight(bookmarkBeforeSeek, bookmark, bookmarksView);
+    }
 
+    private void setBookmarkHighlight(int bookmarkBeforeSeek, int bookmark, View bookmarksView) {
         if(bookmarkBeforeSeek >= 0 && bookmark >= 0) {
             View bookmarkViewBeforeSeek = bookmarksView.findViewWithTag(bookmarkBeforeSeek);
             if(bookmarkViewBeforeSeek != null) bookmarkViewBeforeSeek.setBackgroundColor(Color.WHITE);
