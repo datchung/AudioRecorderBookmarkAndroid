@@ -48,7 +48,8 @@
 
     <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/bookmarksScrollView">
         <LinearLayout
             android:id="@+id/bookmarksLayout"
             android:layout_width="match_parent"

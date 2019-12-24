@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -137,7 +138,10 @@ public class PlayActivity extends AppCompatActivity implements MediaController.M
 
         if(bookmark >= 0) {
             View bookmarkView = bookmarksView.findViewWithTag(bookmark);
-            if(bookmarkView != null) bookmarkView.setBackgroundColor(Color.GREEN);
+            if(bookmarkView != null) {
+                bookmarkView.setBackgroundColor(Color.GREEN);
+                scrollToView(bookmarkView);
+            }
         }
     }
 
@@ -153,8 +157,23 @@ public class PlayActivity extends AppCompatActivity implements MediaController.M
 
         if(bookmark >= 0) {
             View bookmarkView = bookmarksView.findViewWithTag(bookmark);
-            if(bookmarkView != null) bookmarkView.setBackgroundColor(Color.GREEN);
+            if(bookmarkView != null) {
+                bookmarkView.setBackgroundColor(Color.GREEN);
+                scrollToView(bookmarkView);
+            }
         }
+    }
+
+    private void scrollToView(final View view){
+        final ScrollView scrollView = (ScrollView)findViewById(R.id.bookmarksScrollView);
+        if(scrollView == null) return;
+
+        scrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.smoothScrollTo(0, view.getTop());
+            }
+        });
     }
 
     @Override
