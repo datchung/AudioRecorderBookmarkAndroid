@@ -3,21 +3,13 @@ package com.innochi.audiorecorderbookmark;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.MemoryFile;
-import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.TextView;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class PlayActivity extends AppCompatActivity implements MediaController.MediaPlayerControl {
@@ -61,16 +53,18 @@ public class PlayActivity extends AppCompatActivity implements MediaController.M
             @Override
             public void onClick(View v) {
                 onPreviousBookmarkClick(v);
+                controller.show(0);
             }
         }, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onNextBookmarkClick(v);
+                controller.show(0);
             }
         });
 
         controller.setMediaPlayer(this);
-        controller.setAnchorView(findViewById(R.id.playRecordingTitle));
+        controller.setAnchorView(findViewById(R.id.bookmarksLayout));
         controller.setEnabled(true);
     }
 

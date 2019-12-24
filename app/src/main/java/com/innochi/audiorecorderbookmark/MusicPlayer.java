@@ -19,10 +19,6 @@ public class MusicPlayer {
         mOffsetMs = offsetMs;
     }
 
-//    public MediaPlayer getPlayer() {
-//        return mPlayer;
-//    }
-
     public void startPlaying() {
         mPlayer = new MediaPlayer();
         try {
