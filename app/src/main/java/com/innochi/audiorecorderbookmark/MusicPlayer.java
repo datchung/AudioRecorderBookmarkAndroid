@@ -87,18 +87,20 @@ public class MusicPlayer {
     }
 
     public int getPosition(){
-        return mPlayer.getCurrentPosition();
+        return mPlayer == null ? 0 : mPlayer.getCurrentPosition();
     }
 
     public int getDuration(){
-        return mPlayer.getDuration();
+        return mPlayer == null ? 0 : mPlayer.getDuration();
     }
 
     public void seek(int position){
+        if(mPlayer == null) return;
         mPlayer.seekTo(position);
     }
 
     public void start(){
+        if(mPlayer == null) return;
         mPlayer.start();
     }
 }

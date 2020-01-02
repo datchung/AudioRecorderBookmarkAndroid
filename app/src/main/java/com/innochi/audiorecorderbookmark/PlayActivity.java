@@ -9,15 +9,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class PlayActivity extends AppCompatActivity {
 
     private MusicPlayer mPlayer = null;
     private String mFilePath = null;
     private int mOffsetMs = -5000;
+    private SeekBar mSeekBar = null;
+    private TextView mSeekBarTextView = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,12 +40,41 @@ public class PlayActivity extends AppCompatActivity {
 
         mPlayer = new MusicPlayer(mFilePath, bookmarks, mOffsetMs);
         mPlayer.startPlaying();
+
+        initializeSeekBar();
     }
 
     @Override
     public void onStop() {
         super.onStop();
         mPlayer.stopPlaying();
+    }
+
+    private void initializeSeekBar() {
+        mSeekBar = findViewById(R.id.playSeekBar);
+        mSeekBar.setMax(mPlayer.getDuration() / 1000);
+
+        mSeekBarTextView = findViewById(R.id.playRecordingPosition);
+
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask()
+        {
+            @Override
+            public void run()
+            {
+                if(mPlayer != null) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            int position = mPlayer.getPosition();
+                            int progress = position / 1000;
+                            mSeekBar.setProgress(progress);
+                            mSeekBarTextView.setText(msToHhmmss(position));
+                        }
+                    });
+                }
+            }
+        }, 1000, 1000);
     }
 
     private List<Integer> getBookmarks() {
@@ -78,10 +112,10 @@ public class PlayActivity extends AppCompatActivity {
     }
 
     private void updateRecordingPositionDisplay(int position) {
-        TextView view = findViewById(R.id.recordingPosition);
-        if(view == null) return;
-
-        view.setText(msToHhmmss(position));
+//        TextView view = findViewById(R.id.recordingPosition);
+//        if(view == null) return;
+//
+//        view.setText(msToHhmmss(position));
     }
 
     public void onPlayClick(View view) {
