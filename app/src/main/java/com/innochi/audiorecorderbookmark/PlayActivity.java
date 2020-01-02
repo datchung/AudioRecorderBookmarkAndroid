@@ -75,6 +75,23 @@ public class PlayActivity extends AppCompatActivity {
                 }
             }
         }, 1000, 1000);
+
+        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                mPlayer.seek(mSeekBar.getProgress() * 1000);
+            }
+        });
     }
 
     private List<Integer> getBookmarks() {
