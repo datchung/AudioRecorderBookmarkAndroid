@@ -8,16 +8,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.MediaController;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.util.List;
 
-public class PlayActivity extends AppCompatActivity implements MediaController.MediaPlayerControl {
+public class PlayActivity extends AppCompatActivity {
 
     private MusicPlayer mPlayer = null;
-    private MusicController controller = null;
     private String mFilePath = null;
     private int mOffsetMs = -5000;
 
@@ -37,37 +35,12 @@ public class PlayActivity extends AppCompatActivity implements MediaController.M
 
         mPlayer = new MusicPlayer(mFilePath, bookmarks, mOffsetMs);
         mPlayer.startPlaying();
-
-        setController();
     }
 
     @Override
     public void onStop() {
         super.onStop();
         mPlayer.stopPlaying();
-    }
-
-    private void setController(){
-        //set the controller up
-        controller = new MusicController(this);
-
-        controller.setPrevNextListeners(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onPreviousBookmarkClick(v);
-                controller.show(0);
-            }
-        }, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onNextBookmarkClick(v);
-                controller.show(0);
-            }
-        });
-
-        controller.setMediaPlayer(this);
-        controller.setAnchorView(findViewById(R.id.bookmarksLayout));
-        controller.setEnabled(true);
     }
 
     private List<Integer> getBookmarks() {
@@ -167,58 +140,33 @@ public class PlayActivity extends AppCompatActivity implements MediaController.M
         });
     }
 
-    @Override
+//    @Override
     public void start() {
         mPlayer.start();
     }
 
-    @Override
+//    @Override
     public void pause() {
         mPlayer.pausePlaying();
     }
 
-    @Override
+//    @Override
     public int getDuration() {
         return mPlayer.getDuration();
     }
 
-    @Override
+//    @Override
     public int getCurrentPosition() {
         return mPlayer.getPosition();
     }
 
-    @Override
+//    @Override
     public void seekTo(int i) {
         mPlayer.seek(i);
     }
 
-    @Override
+//    @Override
     public boolean isPlaying() {
         return mPlayer.isPlaying();
-    }
-
-    @Override
-    public int getBufferPercentage() {
-        return 0;
-    }
-
-    @Override
-    public boolean canPause() {
-        return true;
-    }
-
-    @Override
-    public boolean canSeekBackward() {
-        return true;
-    }
-
-    @Override
-    public boolean canSeekForward() {
-        return true;
-    }
-
-    @Override
-    public int getAudioSessionId() {
-        return 0;
     }
 }
