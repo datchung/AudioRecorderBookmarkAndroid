@@ -44,7 +44,7 @@ public class MusicPlayer {
     }
 
     public boolean isPlaying() {
-        return mPlayer.isPlaying();
+        return mPlayer == null ? false : mPlayer.isPlaying();
     }
 
     public void resume() {

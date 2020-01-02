@@ -88,7 +88,12 @@ public class PlayActivity extends AppCompatActivity {
         if(mPlayer == null) return;
         if(mPlayer.isPlaying()) return;
 
-        mPlayer.resume();
+        try {
+            mPlayer.resume();
+        }
+        catch(Exception e) {
+            mPlayer.startPlaying();
+        }
     }
 
     public void onPauseClick(View view) {
