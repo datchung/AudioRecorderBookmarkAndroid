@@ -23,6 +23,7 @@ public class PlayActivity extends AppCompatActivity {
     private int mOffsetMs = -5000;
     private SeekBar mSeekBar = null;
     private TextView mSeekBarTextView = null;
+    private Timer mSeekBarTimer = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,11 @@ public class PlayActivity extends AppCompatActivity {
 
         mPlayer = new MusicPlayer(mFilePath, bookmarks, mOffsetMs);
         mPlayer.startPlaying();
+    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
         initializeSeekBar();
     }
 
@@ -48,8 +53,15 @@ public class PlayActivity extends AppCompatActivity {
     public void onStop() {
         super.onStop();
         mPlayer.stopPlaying();
+        clearSeekBarTimer();
     }
 
+    private void clearSeekBarTimer() {
+        if(mSeekBarTimer == null) return;
+
+        mSeekBarTimer.cancel();
+        mSeekBarTimer = null;
+    }
     private void initializeSeekBar() {
         mSeekBar = findViewById(R.id.playSeekBar);
         int duration = mPlayer.getDuration();
@@ -60,8 +72,9 @@ public class PlayActivity extends AppCompatActivity {
 
         mSeekBarTextView = findViewById(R.id.playRecordingPosition);
 
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask()
+        clearSeekBarTimer();
+        mSeekBarTimer = new Timer();
+        mSeekBarTimer.schedule(new TimerTask()
         {
             @Override
             public void run()
@@ -78,7 +91,7 @@ public class PlayActivity extends AppCompatActivity {
                     });
                 }
             }
-        }, 1000, 1000);
+        }, 0, 1000);
 
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
