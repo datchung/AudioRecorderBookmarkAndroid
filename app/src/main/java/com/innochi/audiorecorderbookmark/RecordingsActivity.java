@@ -42,7 +42,7 @@ public class RecordingsActivity extends AppCompatActivity {
 
     private View getRecordingView(final File file) {
         // Main layout
-        LinearLayout layout = new LinearLayout(this);
+        final LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.HORIZONTAL);
 
         // File name
@@ -73,6 +73,7 @@ public class RecordingsActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 deleteFile(file);
+                removeRecordingView(layout);
             }});
 
         // Add delete button to main layout
@@ -85,6 +86,21 @@ public class RecordingsActivity extends AppCompatActivity {
         return layout;
     }
 
+    private void removeRecordingView(View recordingView) {
+        LinearLayout recordingsView = findViewById(R.id.recordingsLayout);
+        recordingsView.removeView(recordingView);
+    }
+
     private void deleteFile(File file) {
+        try {
+            // Delete audio
+            file.delete();
+
+            // Delete bookmarks
+            File bookmarksFile = new File(file.getAbsolutePath().replace(AppStorage.AUDIO_FILE_EXTENSION, AppStorage.BOOKMARK_FILE_EXTENSION));
+            if(bookmarksFile.exists()) bookmarksFile.delete();
+        }
+        catch(Exception e) {
+        }
     }
 }
