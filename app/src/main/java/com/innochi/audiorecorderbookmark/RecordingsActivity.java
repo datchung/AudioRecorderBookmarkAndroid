@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -30,23 +31,60 @@ public class RecordingsActivity extends AppCompatActivity {
         LinearLayout layout = findViewById(R.id.recordingsLayout);
 
         for (final File file : mFiles) {
-            TextView view = new TextView(this);
-            view.setText(FileUtils.getFilenameWithoutExtension(file.getName()));
-
-            final RecordingsActivity self = this;
-            view.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    Intent intent = new Intent(self, PlayActivity.class);
-                    intent.putExtra("filePath", file.getAbsolutePath());
-                    startActivity(intent);
-                }});
-
-            view.setPadding(0, 16, 0, 16);
+            View view = getRecordingView(file);
 
             layout.addView(view,
                     new LinearLayout.LayoutParams(
                             ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.WRAP_CONTENT));
         }
+    }
+
+    private View getRecordingView(final File file) {
+        // Main layout
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.HORIZONTAL);
+
+        // File name
+        TextView textView = new TextView(this);
+        textView.setText(FileUtils.getFilenameWithoutExtension(file.getName()));
+
+        // File name click
+        final RecordingsActivity self = this;
+        textView.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(self, PlayActivity.class);
+                intent.putExtra("filePath", file.getAbsolutePath());
+                startActivity(intent);
+            }});
+
+        // Add file name to main layout
+        LinearLayout.LayoutParams textViewLayoutParams = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        textViewLayoutParams.weight = 1;
+        layout.addView(textView, textViewLayoutParams);
+
+        // Delete button
+        Button button = new Button(this);
+        button.setText(R.string.delete);
+
+        // Delete click
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                deleteFile(file);
+            }});
+
+        // Add delete button to main layout
+        LinearLayout.LayoutParams buttonLayoutParams = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        buttonLayoutParams.weight = 0;
+        layout.addView(button, buttonLayoutParams);
+
+        return layout;
+    }
+
+    private void deleteFile(File file) {
     }
 }

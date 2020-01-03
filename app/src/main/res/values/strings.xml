@@ -10,4 +10,5 @@
     <string name="bookmark">Bookmark</string>
     <string name="stopRecording">Stop Recording</string>
     <string name="bookmarks">Bookmarks</string>
+    <string name="delete">Delete</string>
 </resources>
