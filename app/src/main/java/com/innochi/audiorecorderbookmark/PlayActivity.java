@@ -52,7 +52,11 @@ public class PlayActivity extends AppCompatActivity {
 
     private void initializeSeekBar() {
         mSeekBar = findViewById(R.id.playSeekBar);
-        mSeekBar.setMax(mPlayer.getDuration() / 1000);
+        int duration = mPlayer.getDuration();
+        mSeekBar.setMax(duration / 1000);
+
+        TextView durationTextView = findViewById(R.id.playRecordingDuration);
+        durationTextView.setText(msToHhmmss(duration));
 
         mSeekBarTextView = findViewById(R.id.playRecordingPosition);
 
