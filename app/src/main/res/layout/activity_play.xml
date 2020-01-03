@@ -76,6 +76,11 @@
             android:onClick="onNextBookmarkClick"/>
     </LinearLayout>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/bookmarks"/>
+
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
