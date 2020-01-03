@@ -115,8 +115,7 @@ public class PlayActivity extends AppCompatActivity {
 
             view.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    int offsetPosition = mPlayer.seekWithOffset(bookmark);
-                    updateRecordingPositionDisplay(offsetPosition);
+                    mPlayer.seekWithOffset(bookmark);
                 }});
 
             view.setPadding(0, 16, 0, 16);
@@ -126,13 +125,6 @@ public class PlayActivity extends AppCompatActivity {
                             ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.WRAP_CONTENT));
         }
-    }
-
-    private void updateRecordingPositionDisplay(int position) {
-//        TextView view = findViewById(R.id.recordingPosition);
-//        if(view == null) return;
-//
-//        view.setText(msToHhmmss(position));
     }
 
     public void onPlayClick(View view) {
