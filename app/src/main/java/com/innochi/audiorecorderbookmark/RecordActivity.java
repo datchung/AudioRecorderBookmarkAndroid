@@ -59,7 +59,7 @@ public class RecordActivity extends AppCompatActivity {
         // Record to the external cache directory for visibility
         mRecordStartDate = new Date();
         String rootDirectoryPath = AppStorage.getAppRootDirectoryPath(this);
-        String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(mRecordStartDate);
+        String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH_mm_ss").format(mRecordStartDate);
         mAudioFileName = rootDirectoryPath + timeStamp + AppStorage.AUDIO_FILE_EXTENSION;
         mBookmarkFileName = rootDirectoryPath + timeStamp + AppStorage.BOOKMARK_FILE_EXTENSION;
 
