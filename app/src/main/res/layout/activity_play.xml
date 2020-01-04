@@ -10,7 +10,7 @@
         android:id="@+id/playRecordingTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/H1TextStyle" />
+        style="@style/H1FirstTextStyle" />
 
     <SeekBar
         android:id="@+id/playSeekBar"

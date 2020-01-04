@@ -8,15 +8,12 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="H1TextStyle">
+    <style name="H1FirstTextStyle">
         <item name="android:textSize">20sp</item>
-        <item name="android:paddingTop">20sp</item>
         <item name="android:paddingBottom">10sp</item>
     </style>
 
-    <style name="H2TextStyle">
-        <item name="android:textSize">17sp</item>
-        <item name="android:paddingTop">20sp</item>
-        <item name="android:paddingBottom">10sp</item>
+    <style name="H1TextStyle" parent="H1FirstTextStyle">
+        <item name="android:paddingTop">40sp</item>
     </style>
 </resources>
