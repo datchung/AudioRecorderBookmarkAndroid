@@ -79,9 +79,10 @@
         style="@style/H1TextStyle" />
 
     <ScrollView
+        android:id="@+id/bookmarksScrollView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/bookmarksScrollView">
+        android:background="@android:color/white">
 
         <LinearLayout
             android:id="@+id/bookmarksLayout"
