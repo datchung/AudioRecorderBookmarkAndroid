@@ -101,7 +101,10 @@ public class RecordActivity extends AppCompatActivity {
 
     public void updateRecordButtonText() {
         Button button = findViewById(R.id.startStopRecordButton);
-        if(button != null) button.setText(mIsRecording ? R.string.stopRecording : R.string.startRecording);
+        button.setText(mIsRecording ? R.string.stopRecording : R.string.startRecording);
+
+        button = findViewById(R.id.bookmarkButton);
+        button.setEnabled(mIsRecording);
     }
 
     public void onBookmarkClick(View view) {
