@@ -11,4 +11,7 @@
     <string name="stopRecording">Stop Recording</string>
     <string name="bookmarks">Bookmarks</string>
     <string name="delete">Delete</string>
+    <string name="confirmAction">Are you sure?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

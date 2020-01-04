@@ -1,7 +1,9 @@
 package com.innochi.audiorecorderbookmark;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -72,8 +74,7 @@ public class RecordingsActivity extends AppCompatActivity {
         // Delete click
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                deleteFile(file);
-                removeRecordingView(layout);
+                confirmDelete(file, layout);
             }});
 
         // Add delete button to main layout
@@ -89,6 +90,25 @@ public class RecordingsActivity extends AppCompatActivity {
     private void removeRecordingView(View recordingView) {
         LinearLayout recordingsView = findViewById(R.id.recordingsLayout);
         recordingsView.removeView(recordingView);
+    }
+
+    private void confirmDelete(final File file, final View view) {
+        // https://stackoverflow.com/a/2478662/4856020
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        deleteFile(file);
+                        removeRecordingView(view);
+                        break;
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(getString(R.string.confirmAction)).setPositiveButton(getString(R.string.yes), dialogClickListener)
+                .setNegativeButton(getString(R.string.no), dialogClickListener).show();
     }
 
     private void deleteFile(File file) {
