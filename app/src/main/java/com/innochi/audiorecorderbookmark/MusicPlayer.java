@@ -24,6 +24,14 @@ public class MusicPlayer {
         try {
             mPlayer.setDataSource(mFilePath);
             mPlayer.prepare();
+
+            mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    stopPlaying();
+                }
+            });
+
             mPlayer.start();
         } catch (IOException e) {
             Log.e("", "prepare() failed");
@@ -99,8 +107,8 @@ public class MusicPlayer {
         mPlayer.seekTo(position);
     }
 
-    public void start(){
-        if(mPlayer == null) return;
-        mPlayer.start();
-    }
+//    public void start(){
+//        if(mPlayer == null) return;
+//        mPlayer.start();
+//    }
 }

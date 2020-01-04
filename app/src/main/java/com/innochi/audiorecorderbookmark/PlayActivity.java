@@ -206,32 +206,32 @@ public class PlayActivity extends AppCompatActivity {
     }
 
 //    @Override
-    public void start() {
-        mPlayer.start();
-    }
+//    public void start() {
+//        mPlayer.start();
+//    }
 
 //    @Override
-    public void pause() {
-        mPlayer.pausePlaying();
-    }
+//    public void pause() {
+//        mPlayer.pausePlaying();
+//    }
 
 //    @Override
-    public int getDuration() {
-        return mPlayer.getDuration();
-    }
+//    public int getDuration() {
+//        return mPlayer.getDuration();
+//    }
 
 //    @Override
-    public int getCurrentPosition() {
-        return mPlayer.getPosition();
-    }
+//    public int getCurrentPosition() {
+//        return mPlayer.getPosition();
+//    }
 
 //    @Override
-    public void seekTo(int i) {
-        mPlayer.seek(i);
-    }
+//    public void seekTo(int i) {
+//        mPlayer.seek(i);
+//    }
 
 //    @Override
-    public boolean isPlaying() {
-        return mPlayer.isPlaying();
-    }
+//    public boolean isPlaying() {
+//        return mPlayer.isPlaying();
+//    }
 }
