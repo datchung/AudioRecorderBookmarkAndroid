@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:text="@string/startRecording"
         android:layout_weight="0"
+        android:drawableLeft="@drawable/ic_appbar_microphone"
         android:onClick="onRecordClick"/>
 
     <Button
