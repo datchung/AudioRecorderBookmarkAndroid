@@ -15,12 +15,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onRecordClick(View view) {
-        Intent myIntent = new Intent(this, RecordActivity.class);
-        startActivity(myIntent);
+        Intent intent = new Intent(this, RecordActivity.class);
+        startActivity(intent);
     }
 
     public void onPlayClick(View view) {
-        Intent myIntent = new Intent(this, RecordingsActivity.class);
-        startActivity(myIntent);
+        Intent intent = new Intent(this, RecordingsActivity.class);
+        startActivity(intent);
+    }
+
+    public void onSettingsClick(View view) {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
     }
 }
