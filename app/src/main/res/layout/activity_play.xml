@@ -39,40 +39,34 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <Button
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/play"
+            android:src="@drawable/ic_appbar_control_play"
             android:onClick="onPlayClick"/>
 
-        <Button
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/pause"
+            android:src="@drawable/ic_appbar_control_pause"
             android:onClick="onPauseClick"/>
 
-        <Button
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/stop"
+            android:src="@drawable/ic_appbar_control_stop"
             android:onClick="onStopClick"/>
-    </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/previousBookmark"
+            android:src="@drawable/ic_appbar_control_rewind"
             android:onClick="onPreviousBookmarkClick"/>
 
-        <Button
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/nextBookmark"
+            android:src="@drawable/ic_appbar_control_fastforward"
             android:onClick="onNextBookmarkClick"/>
     </LinearLayout>
 
