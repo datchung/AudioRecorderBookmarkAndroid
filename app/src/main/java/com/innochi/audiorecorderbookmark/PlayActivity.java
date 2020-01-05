@@ -1,8 +1,10 @@
 package com.innochi.audiorecorderbookmark;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -20,7 +22,7 @@ public class PlayActivity extends AppCompatActivity {
 
     private MusicPlayer mPlayer = null;
     private String mFilePath = null;
-    private int mOffsetMs = -5000;
+    private int mOffsetMs = 0;
     private SeekBar mSeekBar = null;
     private TextView mSeekBarTextView = null;
     private Timer mSeekBarTimer = null;
@@ -29,6 +31,8 @@ public class PlayActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
+
+        loadPreferences();
 
         Intent intent = getIntent();
         mFilePath = intent.getStringExtra("filePath");
@@ -41,6 +45,18 @@ public class PlayActivity extends AppCompatActivity {
 
         mPlayer = new MusicPlayer(mFilePath, bookmarks, mOffsetMs);
         mPlayer.startPlaying();
+    }
+
+    private void loadPreferences() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if(preferences == null) return;
+
+        try {
+            String offsetSecondsString = preferences.getString(getString(R.string.bookmarkOffset_key), "0");
+            int offsetSeconds = Integer.parseInt(offsetSecondsString);
+            mOffsetMs = offsetSeconds * 1000;
+        }
+        catch(Exception e) {}
     }
 
     @Override
