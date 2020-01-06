@@ -158,7 +158,7 @@ public class PlayActivity extends AppCompatActivity {
 
             view.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    mPlayer.seek(bookmark);
+                    onBookmarkClick(bookmark);
                 }});
 
             view.setPadding(0, 16, 0, 16);
@@ -190,6 +190,13 @@ public class PlayActivity extends AppCompatActivity {
         mPlayer.stopPlaying();
     }
 
+    private void onBookmarkClick(int bookmark) {
+        int bookmarkBeforeSeek = mPlayer.getCurrentBookmark();
+        mPlayer.seekToBookmark(bookmark);
+        View bookmarksView = findViewById(R.id.bookmarksLayout);
+        setBookmarkHighlight(bookmarkBeforeSeek, bookmark, bookmarksView);
+    }
+    
     public void onNextBookmarkClick(View view) {
         int bookmarkBeforeSeek = mPlayer.getCurrentBookmark();
         int bookmark = mPlayer.seekToNextBookmark();

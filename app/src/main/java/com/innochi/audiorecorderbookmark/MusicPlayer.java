@@ -58,6 +58,15 @@ public class MusicPlayer {
         mPlayer.start();
     }
 
+    public int seekToBookmark(int bookmark) {
+        int bookmarkIndex = mBookmarks.indexOf(bookmark);
+        if(bookmarkIndex < 0) return 0;
+
+        mBookmarksCurrentIndex = bookmarkIndex;
+        seek(bookmark);
+        return bookmark;
+    }
+
     public int seekToNextBookmark() {
         int bookmarksSize = mBookmarks.size();
         if(mBookmarksCurrentIndex >= bookmarksSize - 1) return -1;
