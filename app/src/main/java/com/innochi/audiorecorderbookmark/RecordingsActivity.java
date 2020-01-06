@@ -24,6 +24,8 @@ public class RecordingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recordings);
 
+        ActionBarHelper.enableBackButton(this);
+
         populateRecordings();
     }
 
