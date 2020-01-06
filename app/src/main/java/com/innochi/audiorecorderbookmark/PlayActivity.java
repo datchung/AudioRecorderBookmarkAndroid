@@ -14,6 +14,7 @@ import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -43,7 +44,7 @@ public class PlayActivity extends AppCompatActivity {
         List<Integer> bookmarks = getBookmarks();
         populateBookmarks(bookmarks);
 
-        mPlayer = new MusicPlayer(mFilePath, bookmarks, mOffsetMs);
+        mPlayer = new MusicPlayer(mFilePath, bookmarks);
         mPlayer.startPlaying();
     }
 
@@ -78,6 +79,7 @@ public class PlayActivity extends AppCompatActivity {
         mSeekBarTimer.cancel();
         mSeekBarTimer = null;
     }
+
     private void initializeSeekBar() {
         mSeekBar = findViewById(R.id.playSeekBar);
         int duration = mPlayer.getDuration();
@@ -128,7 +130,15 @@ public class PlayActivity extends AppCompatActivity {
     }
 
     private List<Integer> getBookmarks() {
-        return AppStorage.loadBookmarks(mFilePath.replace(AppStorage.AUDIO_FILE_EXTENSION, AppStorage.BOOKMARK_FILE_EXTENSION));
+        List<Integer> bookmarks = AppStorage.loadBookmarks(mFilePath.replace(AppStorage.AUDIO_FILE_EXTENSION, AppStorage.BOOKMARK_FILE_EXTENSION));
+        List<Integer> bookmarksWithOffset = new ArrayList<>();
+        for(Integer bookmark: bookmarks) {
+            int bookmarkWithOffset = bookmark + mOffsetMs;
+            if(bookmarkWithOffset < 0) bookmarkWithOffset = 0;
+            bookmarksWithOffset.add(bookmarkWithOffset);
+        }
+
+        return bookmarksWithOffset;
     }
 
     private static String msToHhmmss(int ms) {
@@ -148,7 +158,7 @@ public class PlayActivity extends AppCompatActivity {
 
             view.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    mPlayer.seekWithOffset(bookmark);
+                    mPlayer.seek(bookmark);
                 }});
 
             view.setPadding(0, 16, 0, 16);
