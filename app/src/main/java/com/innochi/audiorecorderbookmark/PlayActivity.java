@@ -196,7 +196,7 @@ public class PlayActivity extends AppCompatActivity {
         View bookmarksView = findViewById(R.id.bookmarksLayout);
         setBookmarkHighlight(bookmarkBeforeSeek, bookmark, bookmarksView);
     }
-    
+
     public void onNextBookmarkClick(View view) {
         int bookmarkBeforeSeek = mPlayer.getCurrentBookmark();
         int bookmark = mPlayer.seekToNextBookmark();

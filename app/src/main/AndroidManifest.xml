@@ -13,13 +13,17 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
-        <activity android:name=".RecordingsActivity" />
+            android:label="@string/title_activity_settings" />
+        <activity
+            android:name=".RecordingsActivity"
+            android:label="@string/title_activity_recordings" />
         <activity
             android:name=".RecordActivity"
+            android:label="@string/title_activity_record"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden" />
         <activity
             android:name=".PlayActivity"
+            android:label="@string/title_activity_play"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden" />
         <activity android:name=".MainActivity">
             <intent-filter>
