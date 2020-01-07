@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
@@ -48,6 +49,7 @@ public class PlayActivity extends AppCompatActivity {
 
         mPlayer = new MusicPlayer(mFilePath, bookmarks);
         mPlayer.startPlaying();
+        updatePlayButtonState(true);
     }
 
     private void loadPreferences() {
@@ -172,9 +174,21 @@ public class PlayActivity extends AppCompatActivity {
         }
     }
 
-    public void onPlayClick(View view) {
-        if(mPlayer == null) return;
-        if(mPlayer.isPlaying()) return;
+    private void updatePlayButtonState(boolean isPlaying) {
+        ImageButton button = findViewById(R.id.playButton);
+        button.setImageResource(isPlaying ? R.drawable.ic_appbar_control_pause : R.drawable.ic_appbar_control_play);
+    }
+
+    public void onPlayToggleClick(View view) {
+        if(mPlayer == null) {
+            updatePlayButtonState(false);
+            return;
+        }
+        if(mPlayer.isPlaying()) {
+            mPlayer.pausePlaying();
+            updatePlayButtonState(false);
+            return;
+        }
 
         try {
             mPlayer.resume();
@@ -182,10 +196,7 @@ public class PlayActivity extends AppCompatActivity {
         catch(Exception e) {
             mPlayer.startPlaying();
         }
-    }
-
-    public void onPauseClick(View view) {
-        mPlayer.pausePlaying();
+        updatePlayButtonState(true);
     }
 
     public void onStopClick(View view) {

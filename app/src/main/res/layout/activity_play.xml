@@ -42,17 +42,17 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"/>-->
+
         <ImageButton
+            android:id="@+id/playButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_appbar_control_play"
-            android:onClick="onPlayClick"/>
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_appbar_control_pause"
-            android:onClick="onPauseClick"/>
+            android:onClick="onPlayToggleClick"/>
 
         <ImageButton
             android:layout_width="wrap_content"
@@ -71,6 +71,11 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_appbar_control_fastforward"
             android:onClick="onNextBookmarkClick"/>
+
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"/>-->
     </LinearLayout>
 
     <TextView
