@@ -227,7 +227,7 @@ public class PlayActivity extends AppCompatActivity {
     private void setBookmarkHighlight(int bookmarkBeforeSeek, int bookmark, View bookmarksView) {
         if(bookmarkBeforeSeek >= 0 && bookmark >= 0) {
             View bookmarkViewBeforeSeek = bookmarksView.findViewWithTag(bookmarkBeforeSeek);
-            if(bookmarkViewBeforeSeek != null) bookmarkViewBeforeSeek.setBackgroundColor(Color.WHITE);
+            if(bookmarkViewBeforeSeek != null) bookmarkViewBeforeSeek.setBackgroundColor(Color.TRANSPARENT);
         }
 
         if(bookmark >= 0) {

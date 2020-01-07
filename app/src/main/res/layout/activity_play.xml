@@ -42,11 +42,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight="1"/>-->
-
         <ImageButton
             android:id="@+id/playButton"
             android:layout_width="wrap_content"
@@ -71,11 +66,6 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_appbar_control_fastforward"
             android:onClick="onNextBookmarkClick"/>
-
-        <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight="1"/>-->
     </LinearLayout>
 
     <TextView
@@ -87,8 +77,7 @@
     <ScrollView
         android:id="@+id/bookmarksScrollView"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:id="@+id/bookmarksLayout"
