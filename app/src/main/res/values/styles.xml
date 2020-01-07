@@ -9,11 +9,16 @@
     </style>
 
     <style name="H1FirstTextStyle">
-        <item name="android:textSize">20sp</item>
-        <item name="android:paddingBottom">10sp</item>
+        <!--<item name="android:textSize">20sp</item>-->
+        <item name="android:paddingTop">15sp</item>
+        <item name="android:paddingBottom">20sp</item>
+        <!--<item name="android:textAllCaps">true</item>-->
+        <item name="android:textColor">@color/colorAccent</item>
+        <!--<item name="android:textStyle">bold</item>-->
     </style>
 
     <style name="H1TextStyle" parent="H1FirstTextStyle">
         <item name="android:paddingTop">40sp</item>
     </style>
+
 </resources>

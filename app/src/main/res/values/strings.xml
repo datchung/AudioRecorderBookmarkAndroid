@@ -27,5 +27,5 @@
 
     <string name="title_activity_recordings">Recordings</string>
     <string name="title_activity_record">Record</string>
-    <string name="title_activity_play">Play Recording</string>
+    <string name="title_activity_play">Play</string>
 </resources>
