@@ -31,4 +31,7 @@
     <string name="title_activity_recordings">Recordings</string>
     <string name="title_activity_record">Record</string>
     <string name="title_activity_play">Play</string>
+    <string name="add">Add</string>
+    <string name="addNote">Add Note</string>
+    <string name="cancel">Cancel</string>
 </resources>

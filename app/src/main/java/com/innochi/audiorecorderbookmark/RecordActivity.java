@@ -1,17 +1,23 @@
 package com.innochi.audiorecorderbookmark;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.preference.PreferenceManager;
 
 import android.Manifest;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -28,6 +34,7 @@ public class RecordActivity extends AppCompatActivity {
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
     private String mAudioFileName = null;
     private String mBookmarkFileName = null;
+    private boolean mPromptForNote = false;
 
     private boolean mIsRecording = false;
     private MediaRecorder mRecorder = null;
@@ -113,11 +120,50 @@ public class RecordActivity extends AppCompatActivity {
 
         try {
             PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(mBookmarkFileName, true)));
-            out.println(dateDiff);
+            if(mPromptForNote)
+                out.print(dateDiff);
+            else
+                out.println(dateDiff);
             out.close();
         } catch (IOException e) {
             // TODO: handle error
         }
+
+        if(!mPromptForNote) return;
+        promptForNote();
+    }
+
+    public void promptForNote() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.addNote));
+
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String note = "";
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        note = input.getText().toString();
+                        break;
+                }
+
+                try {
+                    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(mBookmarkFileName, true)));
+                    out.println(note);
+                    out.close();
+                } catch (IOException e) {
+                    // TODO: handle error
+                }
+            }
+        };
+
+        builder.setPositiveButton(getString(R.string.add), dialogClickListener)
+                .setNegativeButton(getString(R.string.cancel), dialogClickListener)
+                .show();
     }
 
     public static long getDateDiff(Date date1, Date date2, TimeUnit timeUnit) {
@@ -131,6 +177,8 @@ public class RecordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_record);
 
         ActionBarHelper.enableBackButton(this);
+
+        loadPreferences();
     }
 
     @Override
@@ -138,5 +186,15 @@ public class RecordActivity extends AppCompatActivity {
         super.onStop();
 
         stopRecording();
+    }
+
+    private void loadPreferences() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if(preferences == null) return;
+
+        try {
+            mPromptForNote = preferences.getBoolean(getString(R.string.bookmarkPromptNote_key), true);
+        }
+        catch(Exception e) {}
     }
 }
