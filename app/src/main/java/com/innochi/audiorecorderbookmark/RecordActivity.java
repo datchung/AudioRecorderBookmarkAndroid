@@ -56,8 +56,6 @@ public class RecordActivity extends AppCompatActivity {
     }
 
     private void startRecording() {
-        ActivityCompat.requestPermissions(this, mPermissions, REQUEST_RECORD_AUDIO_PERMISSION);
-
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         mIsRecording = true;
@@ -179,6 +177,8 @@ public class RecordActivity extends AppCompatActivity {
         ActionBarHelper.enableBackButton(this);
 
         loadPreferences();
+        
+        ActivityCompat.requestPermissions(this, mPermissions, REQUEST_RECORD_AUDIO_PERMISSION);
     }
 
     @Override
