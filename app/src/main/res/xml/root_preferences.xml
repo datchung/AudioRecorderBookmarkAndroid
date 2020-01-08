@@ -14,8 +14,7 @@
   ~ limitations under the License.
   -->
 
-<androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory app:title="@string/recording_header">
 
@@ -24,6 +23,13 @@
             app:title="@string/bookmarkOffset_title"
             app:summary="@string/bookmarkOffset_summary"
             app:defaultValue="-5"
+            />
+
+        <CheckBoxPreference
+            app:key="@string/bookmarkPromptNote_key"
+            app:title="@string/bookmarkPromptNote_title"
+            app:summary="@string/bookmarkPromptNote_summary"
+            app:defaultValue="true"
             />
     </PreferenceCategory>
 
