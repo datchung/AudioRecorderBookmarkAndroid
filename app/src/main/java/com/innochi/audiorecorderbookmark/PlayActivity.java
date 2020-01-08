@@ -233,7 +233,7 @@ public class PlayActivity extends AppCompatActivity {
         if(bookmark >= 0) {
             View bookmarkView = bookmarksView.findViewWithTag(bookmark);
             if(bookmarkView != null) {
-                bookmarkView.setBackgroundColor(Color.GREEN);
+                bookmarkView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 scrollToView(bookmarkView);
             }
         }
