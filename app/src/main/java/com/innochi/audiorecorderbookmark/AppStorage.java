@@ -33,15 +33,27 @@ public final class AppStorage {
         return filteredFiles;
     }
 
-    public static List<Integer> loadBookmarks(String bookmarksFilePath) {
-        List<Integer> bookmarks = new ArrayList<>();
+    public static List<Bookmark> loadBookmarks(String bookmarksFilePath) {
+        List<Bookmark> bookmarks = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(bookmarksFilePath))) {
             String line;
             while ((line = br.readLine()) != null) {
-                Integer parsed = intTryParse(line, -1);
-                if(parsed < 0) continue;
-                bookmarks.add(parsed);
+                String[] parts = line.split("\t");
+                Bookmark bookmark = null;
+                if(parts.length > 0) {
+                    Integer parsed = intTryParse(parts[0], -1);
+                    if(parsed < 0) continue;
+
+                    bookmark = new Bookmark();
+                    bookmark.ms = parsed;
+                }
+
+                if(parts.length > 1)
+                    bookmark.note = parts[1];
+
+                if(bookmark == null) continue;
+                bookmarks.add(bookmark);
             }
 
         } catch (IOException e) {

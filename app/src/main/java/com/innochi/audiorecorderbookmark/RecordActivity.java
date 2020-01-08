@@ -144,10 +144,10 @@ public class RecordActivity extends AppCompatActivity {
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String note = "";
+                String note = "\t";
                 switch (which){
                     case DialogInterface.BUTTON_POSITIVE:
-                        note = input.getText().toString();
+                        note += input.getText().toString();
                         break;
                 }
 

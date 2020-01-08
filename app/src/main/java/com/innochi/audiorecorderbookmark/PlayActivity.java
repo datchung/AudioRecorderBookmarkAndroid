@@ -44,12 +44,21 @@ public class PlayActivity extends AppCompatActivity {
         TextView titleView = findViewById(R.id.playRecordingTitle);
         if(titleView != null) titleView.setText(FileUtils.getFilenameWithoutDirectoryAndExtension(mFilePath));
 
-        List<Integer> bookmarks = getBookmarks();
+        List<Bookmark> bookmarks = getBookmarks();
         populateBookmarks(bookmarks);
 
-        mPlayer = new MusicPlayer(mFilePath, bookmarks);
+        mPlayer = new MusicPlayer(mFilePath, getBookmarksAsMs(bookmarks));
         mPlayer.startPlaying();
         updatePlayButtonState(true);
+    }
+
+    private List<Integer> getBookmarksAsMs(List<Bookmark> bookmarks) {
+        List<Integer> bookMarksMs = new ArrayList<>();
+
+        for(Bookmark bookmark: bookmarks)
+            bookMarksMs.add(bookmark.ms);
+
+        return bookMarksMs;
     }
 
     private void loadPreferences() {
@@ -133,13 +142,14 @@ public class PlayActivity extends AppCompatActivity {
         });
     }
 
-    private List<Integer> getBookmarks() {
-        List<Integer> bookmarks = AppStorage.loadBookmarks(mFilePath.replace(AppStorage.AUDIO_FILE_EXTENSION, AppStorage.BOOKMARK_FILE_EXTENSION));
-        List<Integer> bookmarksWithOffset = new ArrayList<>();
-        for(Integer bookmark: bookmarks) {
-            int bookmarkWithOffset = bookmark + mOffsetMs;
+    private List<Bookmark> getBookmarks() {
+        List<Bookmark> bookmarks = AppStorage.loadBookmarks(mFilePath.replace(AppStorage.AUDIO_FILE_EXTENSION, AppStorage.BOOKMARK_FILE_EXTENSION));
+        List<Bookmark> bookmarksWithOffset = new ArrayList<>();
+        for(Bookmark bookmark: bookmarks) {
+            int bookmarkWithOffset = bookmark.ms + mOffsetMs;
             if(bookmarkWithOffset < 0) bookmarkWithOffset = 0;
-            bookmarksWithOffset.add(bookmarkWithOffset);
+            bookmark.ms = bookmarkWithOffset;
+            bookmarksWithOffset.add(bookmark);
         }
 
         return bookmarksWithOffset;
@@ -152,17 +162,17 @@ public class PlayActivity extends AppCompatActivity {
         return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
 
-    private void populateBookmarks(List<Integer> bookmarks) {
+    private void populateBookmarks(List<Bookmark> bookmarks) {
         LinearLayout layout = findViewById(R.id.bookmarksLayout);
-        for(final Integer bookmark: bookmarks) {
+        for(final Bookmark bookmark: bookmarks) {
             TextView view = new TextView(this);
 
-            view.setTag(bookmark);
-            view.setText(msToHhmmss(bookmark));
+            view.setTag(bookmark.ms);
+            view.setText(msToHhmmss(bookmark.ms) + (bookmark.note == null ? "" : " " + bookmark.note));
 
             view.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    onBookmarkClick(bookmark);
+                    onBookmarkClick(bookmark.ms);
                 }});
 
             view.setPadding(0, 16, 0, 16);
