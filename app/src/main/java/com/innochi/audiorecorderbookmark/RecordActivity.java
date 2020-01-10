@@ -142,26 +142,38 @@ public class RecordActivity extends AppCompatActivity {
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String note = "\t";
+                String note = "";
                 switch (which){
                     case DialogInterface.BUTTON_POSITIVE:
-                        note += input.getText().toString();
+                        note = input.getText().toString();
                         break;
                 }
 
-                try {
-                    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(mBookmarkFileName, true)));
-                    out.println(note);
-                    out.close();
-                } catch (IOException e) {
-                    // TODO: handle error
-                }
+                processPromptForNoteDialogResult(note);
+            }
+        };
+
+        DialogInterface.OnDismissListener dialogDismissListener = new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                processPromptForNoteDialogResult("");
             }
         };
 
         builder.setPositiveButton(getString(R.string.add), dialogClickListener)
                 .setNegativeButton(getString(R.string.cancel), dialogClickListener)
+                .setOnDismissListener(dialogDismissListener)
                 .show();
+    }
+
+    private void processPromptForNoteDialogResult(String note) {
+        try {
+            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(mBookmarkFileName, true)));
+            out.println("\t" + note);
+            out.close();
+        } catch (IOException e) {
+            // TODO: handle error
+        }
     }
 
     public static long getDateDiff(Date date1, Date date2, TimeUnit timeUnit) {
