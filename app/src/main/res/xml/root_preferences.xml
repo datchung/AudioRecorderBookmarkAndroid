@@ -22,7 +22,7 @@
             app:key="@string/bookmarkOffset_key"
             app:title="@string/bookmarkOffset_title"
             app:summary="@string/bookmarkOffset_summary"
-            app:defaultValue="-5"
+            app:defaultValue="-3"
             />
 
         <CheckBoxPreference
